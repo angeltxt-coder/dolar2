@@ -66,8 +66,8 @@ export default function WidgetCompartir({ cotizaciones }) {
           Compartir
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-3 sm:p-6 space-y-4">
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+      <CardContent className="p-3 sm:p-6 space-y-3">
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
           <p className="text-sm text-green-800 dark:text-green-200">{textoCompartir}</p>
         </div>
 

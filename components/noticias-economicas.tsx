@@ -116,11 +116,11 @@ export default function NoticiasEconomicas() {
           Noticias
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-3 sm:p-6 space-y-4">
+      <CardContent className="p-3 sm:p-6 space-y-3">
         {noticias.map((noticia) => (
           <div
             key={noticia.id}
-            className="bg-white/50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+            className="bg-white/50 dark:bg-gray-800/50 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between gap-3 mb-2">
               <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100 line-clamp-2">

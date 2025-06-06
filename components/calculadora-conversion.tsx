@@ -72,8 +72,8 @@ export default function CalculadoraConversion({ cotizaciones }) {
           Calculadora
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-3 sm:p-6 space-y-4 sm:space-y-6">
-        <div className="grid gap-4 sm:gap-6">
+      <CardContent className="p-3 sm:p-6 space-y-3 sm:space-y-4">
+        <div className="grid gap-3 sm:gap-4">
           <div className="space-y-2">
             <Label htmlFor="cantidad" className="text-sm font-medium">
               Cantidad

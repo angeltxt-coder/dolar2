@@ -74,14 +74,14 @@ export default async function Home() {
       </header>
 
       <main className="flex-1 p-4 md:p-6">
-        <div className="grid gap-8">
+        <div className="grid gap-4 sm:gap-6">
           {/* Hero Section simplificado */}
-          <div className="text-center space-y-2 sm:space-y-4">
-            <div className="inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-emerald-100 to-blue-100 dark:from-emerald-900/20 dark:to-blue-900/20 px-2 sm:px-4 py-1 sm:py-2 rounded-full">
+          <div className="text-center space-y-2">
+            <div className="inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-emerald-100 to-blue-100 dark:from-emerald-900/20 dark:to-blue-900/20 px-2 sm:px-4 py-1 rounded-full">
               <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-600 dark:text-emerald-400" />
               <span className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-300">En vivo</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-slate-100 dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent px-2">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-slate-100 dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent">
               Cotizaciones del Dólar
             </h1>
           </div>
@@ -93,20 +93,18 @@ export default async function Home() {
             <Card className="relative border-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-2xl overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 animate-[shimmer_2s_ease-in-out_infinite]"></div>
 
-              <CardContent className="relative p-4 sm:p-8">
-                <div className="text-center space-y-3 sm:space-y-4">
-                  <div className="flex items-center justify-center gap-2 sm:gap-3">
+              <CardContent className="relative p-3 sm:p-6">
+                <div className="text-center space-y-2 sm:space-y-3">
+                  <div className="flex items-center justify-center gap-2">
                     <div className="relative flex items-center justify-center">
                       <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur animate-pulse"></div>
-                      <div className="relative bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center">
-                        <span className="text-2xl sm:text-3xl">🏛️</span>
+                      <div className="relative bg-gradient-to-r from-emerald-500 to-blue-600 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center">
+                        <span className="text-xl sm:text-2xl">🏛️</span>
                       </div>
                     </div>
-                    <div>
-                      <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        Dólar Oficial
-                      </h2>
-                    </div>
+                    <h2 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Dólar Oficial
+                    </h2>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 sm:gap-8 max-w-md mx-auto">
@@ -173,9 +171,9 @@ export default async function Home() {
 
           {/* Recomendación simplificada */}
           <Card className="border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm shadow-2xl">
-            <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-3 sm:py-4">
-              <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-xl">
-                <Sparkles className="h-4 w-4 sm:h-6 sm:w-6 text-indigo-600 dark:text-indigo-400" />
+            <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-2 sm:py-3">
+              <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
                 ¿Qué dólar conviene?
               </CardTitle>
             </CardHeader>
@@ -198,13 +196,11 @@ export default async function Home() {
                   <div
                     className={`h-1 bg-gradient-to-r ${dolarColors[cotizacion.casa] || "from-gray-400 to-gray-500"}`}
                   ></div>
-                  <CardHeader className="flex flex-row items-center justify-between pb-1 sm:pb-2 pt-3 px-3 sm:px-4">
-                    <div className="space-y-0.5 sm:space-y-1">
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <span className="text-xl sm:text-2xl">{dolarIcons[cotizacion.casa] || "💰"}</span>
-                        <div>
-                          <CardTitle className="text-sm sm:text-base font-bold">{cotizacion.nombre}</CardTitle>
-                        </div>
+                  <CardHeader className="flex flex-row items-center justify-between pb-2 pt-2 px-3 sm:px-4">
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-lg sm:text-xl">{dolarIcons[cotizacion.casa] || "💰"}</span>
+                        <CardTitle className="text-sm sm:text-base font-bold">{cotizacion.nombre}</CardTitle>
                       </div>
                     </div>
                     {cotizacion.variacion && (
@@ -264,8 +260,8 @@ export default async function Home() {
           </Suspense>
 
           {/* Tabs simplificadas */}
-          <Tabs defaultValue="grafico" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm p-0.5 sm:p-1 rounded-xl shadow-lg">
+          <Tabs defaultValue="grafico" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-2 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm p-0.5 rounded-xl shadow-lg">
               <TabsTrigger
                 value="grafico"
                 className="gap-1 sm:gap-2 text-xs sm:text-sm py-1.5 sm:py-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-blue-500 data-[state=active]:text-white transition-all duration-300"
@@ -284,10 +280,10 @@ export default async function Home() {
 
             <TabsContent value="grafico" className="space-y-4">
               <Card className="border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm shadow-xl">
-                <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 px-3 sm:px-6 py-3 sm:py-4">
-                  <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
-                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
-                    Evolución
+                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-2 sm:py-3">
+                  <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
+                    ¿Qué dólar conviene?
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
@@ -300,10 +296,10 @@ export default async function Home() {
 
             <TabsContent value="comparativa" className="space-y-4">
               <Card className="border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm shadow-xl">
-                <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 px-3 sm:px-6 py-3 sm:py-4">
-                  <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
-                    <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400" />
-                    Comparativa
+                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-2 sm:py-3">
+                  <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
+                    ¿Qué dólar conviene?
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
