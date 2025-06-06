@@ -2,6 +2,7 @@
 
 import { Star } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { getContextualSEOPhrase } from "@/lib/seo-trends"
 
 export default function RecomendacionDolar({ cotizaciones }) {
   // Filtrar cotizaciones válidas (que tengan precio de venta)
@@ -37,6 +38,11 @@ export default function RecomendacionDolar({ cotizaciones }) {
             </div>
           </div>
         </Alert>
+      </div>
+
+      {/* Texto SEO sutil */}
+      <div className="text-xs text-slate-600 dark:text-slate-400 text-center">
+        {getContextualSEOPhrase("recomendacion")}
       </div>
     </div>
   )

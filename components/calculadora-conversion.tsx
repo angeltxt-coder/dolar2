@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { useAnalyticsEventTracker } from "@/components/google-analytics"
+import { getContextualSEOPhrase } from "@/lib/seo-trends"
 
 export default function CalculadoraConversion({ cotizaciones }) {
   const [cantidad, setCantidad] = useState("")
@@ -69,8 +70,9 @@ export default function CalculadoraConversion({ cotizaciones }) {
       <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 px-3 sm:px-6 py-3 sm:py-4">
         <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
           <Calculator className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
-          Calculadora
+          Calculadora de Conversión
         </CardTitle>
+        <p className="text-xs text-purple-600/80">{getContextualSEOPhrase("calculadora")}</p>
       </CardHeader>
       <CardContent className="p-3 sm:p-6 space-y-3 sm:space-y-4">
         <div className="grid gap-3 sm:gap-4">
@@ -95,7 +97,7 @@ export default function CalculadoraConversion({ cotizaciones }) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pesos">💰 Pesos</SelectItem>
+                <SelectItem value="pesos">💰 Pesos Argentinos</SelectItem>
                 {tiposDolar.map((tipo) => (
                   <SelectItem key={tipo.value} value={tipo.value}>
                     💵 {tipo.label}
@@ -123,7 +125,7 @@ export default function CalculadoraConversion({ cotizaciones }) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pesos">💰 Pesos</SelectItem>
+                <SelectItem value="pesos">💰 Pesos Argentinos</SelectItem>
                 {tiposDolar.map((tipo) => (
                   <SelectItem key={tipo.value} value={tipo.value}>
                     💵 {tipo.label}

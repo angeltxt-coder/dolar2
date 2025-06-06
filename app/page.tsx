@@ -14,8 +14,12 @@ import RecomendacionDolar from "@/components/recomendacion-dolar"
 import CalculadoraConversion from "@/components/calculadora-conversion"
 import WidgetCompartir from "@/components/widget-compartir"
 import NoticiasEconomicas from "@/components/noticias-economicas"
+import DynamicSEOContent from "@/components/dynamic-seo-content"
+import SEOFooterContent from "@/components/seo-footer-content"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { getCotizaciones } from "@/lib/api"
+import { getContextualSEOPhrase } from "@/lib/seo-trends"
+import NoticiasRelevantes from "@/components/noticias-relevantes"
 
 // Colores específicos para cada tipo de dólar
 const dolarColors = {
@@ -75,16 +79,29 @@ export default async function Home() {
 
       <main className="flex-1 p-4 md:p-6">
         <div className="grid gap-4 sm:gap-6">
-          {/* Hero Section simplificado */}
+          {/* Hero Section con contenido SEO dinámico */}
           <div className="text-center space-y-2">
             <div className="inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-emerald-100 to-blue-100 dark:from-emerald-900/20 dark:to-blue-900/20 px-2 sm:px-4 py-1 rounded-full">
               <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-600 dark:text-emerald-400" />
               <span className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-300">En vivo</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-slate-100 dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent">
-              Cotizaciones del Dólar
-            </h1>
+
+            {/* Contenido SEO dinámico */}
+            <Suspense
+              fallback={
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-slate-100 dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent">
+                  Cotizaciones del Dólar
+                </h1>
+              }
+            >
+              <DynamicSEOContent cotizaciones={cotizaciones} />
+            </Suspense>
           </div>
+
+          {/* Noticias Relevantes */}
+          <Suspense fallback={<Skeleton className="h-[300px] w-full rounded-lg" />}>
+            <NoticiasRelevantes />
+          </Suspense>
 
           {/* Dólar Oficial Destacado */}
           <div className="relative">
@@ -98,12 +115,12 @@ export default async function Home() {
                   <div className="flex items-center justify-center gap-2">
                     <div className="relative flex items-center justify-center">
                       <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur animate-pulse"></div>
-                      <div className="relative bg-gradient-to-r from-emerald-500 to-blue-600 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center">
+                      <div className="relative bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center">
                         <span className="text-xl sm:text-2xl">🏛️</span>
                       </div>
                     </div>
                     <h2 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      Dólar Oficial
+                      Dólar Oficial BCRA
                     </h2>
                   </div>
 
@@ -174,7 +191,7 @@ export default async function Home() {
             <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-2 sm:py-3">
               <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
                 <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
-                ¿Qué dólar conviene?
+                ¿Qué dólar conviene comprar hoy?
               </CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-6">
@@ -223,7 +240,7 @@ export default async function Home() {
                         <p className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">
                           Compra
                         </p>
-                        <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 p-2 sm:p-3 rounded-lg">
+                        <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 p-2 sm:p-3 rounded-lg">
                           <p className="text-base sm:text-xl font-bold text-emerald-700 dark:text-emerald-300">
                             {cotizacion.compra !== "No Cotiza"
                               ? `$${Number.parseFloat(cotizacion.compra).toFixed(2)}`
@@ -235,7 +252,7 @@ export default async function Home() {
                         <p className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">
                           Venta
                         </p>
-                        <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-2 sm:p-3 rounded-lg">
+                        <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-2 sm:p-3 rounded-lg">
                           <p className="text-base sm:text-xl font-bold text-blue-700 dark:text-blue-300">
                             {cotizacion.venta !== "No Cotiza"
                               ? `$${Number.parseFloat(cotizacion.venta).toFixed(2)}`
@@ -267,24 +284,25 @@ export default async function Home() {
                 className="gap-1 sm:gap-2 text-xs sm:text-sm py-1.5 sm:py-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-blue-500 data-[state=active]:text-white transition-all duration-300"
               >
                 <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
-                Evolución
+                Evolución Histórica
               </TabsTrigger>
               <TabsTrigger
                 value="comparativa"
                 className="gap-1 sm:gap-2 text-xs sm:text-sm py-1.5 sm:py-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-500 data-[state=active]:text-white transition-all duration-300"
               >
                 <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4" />
-                Comparativa
+                Comparativa de Precios
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="grafico" className="space-y-4">
               <Card className="border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm shadow-xl">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-2 sm:py-3">
+                <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-emerald-900/20 px-3 sm:px-6 py-2 sm:py-3">
                   <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
-                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
-                    ¿Qué dólar conviene?
+                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
+                    Evolución del Dólar
                   </CardTitle>
+                  <p className="text-xs text-emerald-600/80">{getContextualSEOPhrase("graficos")}</p>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
                   <Suspense fallback={<Skeleton className="h-full w-full rounded-lg" />}>
@@ -296,11 +314,14 @@ export default async function Home() {
 
             <TabsContent value="comparativa" className="space-y-4">
               <Card className="border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm shadow-xl">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-2 sm:py-3">
+                <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 px-3 sm:px-6 py-2 sm:py-3">
                   <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
-                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
-                    ¿Qué dólar conviene?
+                    <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400" />
+                    Comparativa de Cotizaciones
                   </CardTitle>
+                  <p className="text-xs text-amber-600/80">
+                    Comparación visual de precios entre diferentes tipos de dólar
+                  </p>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
                   <Suspense fallback={<Skeleton className="h-full w-full rounded-lg" />}>
@@ -321,6 +342,11 @@ export default async function Home() {
       {/* Anuncio antes del footer */}
       <GoogleAd adSlot="0987654321" adFormat="horizontal" className="my-8" />
 
+      {/* Contenido SEO en el footer */}
+      <Suspense fallback={null}>
+        <SEOFooterContent />
+      </Suspense>
+
       {/* Footer simplificado */}
       <footer className="border-t border-white/20 dark:border-gray-700/20 bg-gradient-to-r from-slate-900 to-indigo-900 dark:from-gray-900 dark:to-gray-800 text-white">
         <div className="py-4 sm:py-8 px-4 sm:px-6">
@@ -328,7 +354,8 @@ export default async function Home() {
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-emerald-400" />
               <p className="text-xs sm:text-sm">
-                © {new Date().getFullYear()} <span className="font-semibold">dolaroficial.com.ar</span>
+                © {new Date().getFullYear()} <span className="font-semibold">dolaroficial.com.ar</span> - Cotizaciones
+                del dólar en Argentina
               </p>
             </div>
           </div>

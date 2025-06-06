@@ -93,7 +93,7 @@ export default function NoticiasEconomicas() {
         <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-3 sm:px-6 py-3 sm:py-4">
           <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
             <Newspaper className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-            Noticias
+            Análisis Económico
           </CardTitle>
         </CardHeader>
         <CardContent className="p-3 sm:p-6 space-y-4">
@@ -113,7 +113,7 @@ export default function NoticiasEconomicas() {
       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-3 sm:px-6 py-3 sm:py-4">
         <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
           <Newspaper className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-          Noticias
+          Análisis Económico
         </CardTitle>
       </CardHeader>
       <CardContent className="p-3 sm:p-6 space-y-3">
