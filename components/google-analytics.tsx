@@ -2,10 +2,10 @@
 
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 
 // ID de medición de Google Analytics
-const GA_MEASUREMENT_ID = "G-5GJC9KK5H0" // Reemplaza con tu ID de GA4
+const GA_MEASUREMENT_ID = "G-5GJC9KK5H0"
 
 declare global {
   interface Window {
@@ -43,8 +43,8 @@ export const event = ({
   }
 }
 
-// Componente para cargar el script de Google Analytics
-export function GoogleAnalyticsScript() {
+// Componente interno que usa los hooks de navegación
+function AnalyticsTracker() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -58,17 +58,25 @@ export function GoogleAnalyticsScript() {
     }
   }, [pathname, searchParams])
 
+  return null
+}
+
+// Componente principal que carga el script de Google Analytics
+export function GoogleAnalyticsScript() {
   return (
     <>
       <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
       <Script id="google-analytics" strategy="afterInteractive">
         {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-5GJC9KK5H0');
-  `}
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}');
+        `}
       </Script>
+      <Suspense fallback={null}>
+        <AnalyticsTracker />
+      </Suspense>
     </>
   )
 }
