@@ -102,9 +102,9 @@ export default async function Home() {
               <CardContent className="relative p-4 sm:p-8">
                 <div className="text-center space-y-3 sm:space-y-4">
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
-                    <div className="relative">
+                    <div className="relative flex items-center justify-center">
                       <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur animate-pulse"></div>
-                      <div className="relative bg-gradient-to-r from-emerald-500 to-blue-600 p-2 sm:p-3 rounded-full">
+                      <div className="relative bg-gradient-to-r from-emerald-500 to-blue-600 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center">
                         <span className="text-2xl sm:text-3xl">🏛️</span>
                       </div>
                     </div>
@@ -206,81 +206,87 @@ export default async function Home() {
 
           {/* Cards de cotizaciones mejoradas */}
           <div className="grid gap-3 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {cotizaciones.map((cotizacion) => (
-              <Card
-                key={cotizacion.casa}
-                className="group hover:shadow-2xl hover:scale-105 transition-all duration-300 border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm overflow-hidden"
-              >
-                <div
-                  className={`h-1 bg-gradient-to-r ${dolarColors[cotizacion.casa] || "from-gray-400 to-gray-500"}`}
-                ></div>
-                <CardHeader className="flex flex-row items-center justify-between pb-1 sm:pb-2 pt-3 px-3 sm:px-4">
-                  <div className="space-y-0.5 sm:space-y-1">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <span className="text-xl sm:text-2xl">{dolarIcons[cotizacion.casa] || "💰"}</span>
-                      <div>
-                        <CardTitle className="text-sm sm:text-base font-bold">{cotizacion.nombre}</CardTitle>
-                        <CardDescription className="text-[10px] sm:text-xs uppercase tracking-wide font-medium">
-                          {cotizacion.casa}
-                        </CardDescription>
+            {cotizaciones
+              .filter(
+                (c, index, self) =>
+                  // Filtrar duplicados basados en la propiedad 'casa'
+                  index === self.findIndex((t) => t.casa === c.casa),
+              )
+              .map((cotizacion) => (
+                <Card
+                  key={cotizacion.casa}
+                  className="group hover:shadow-2xl hover:scale-105 transition-all duration-300 border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm overflow-hidden"
+                >
+                  <div
+                    className={`h-1 bg-gradient-to-r ${dolarColors[cotizacion.casa] || "from-gray-400 to-gray-500"}`}
+                  ></div>
+                  <CardHeader className="flex flex-row items-center justify-between pb-1 sm:pb-2 pt-3 px-3 sm:px-4">
+                    <div className="space-y-0.5 sm:space-y-1">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <span className="text-xl sm:text-2xl">{dolarIcons[cotizacion.casa] || "💰"}</span>
+                        <div>
+                          <CardTitle className="text-sm sm:text-base font-bold">{cotizacion.nombre}</CardTitle>
+                          <CardDescription className="text-[10px] sm:text-xs uppercase tracking-wide font-medium">
+                            {cotizacion.casa}
+                          </CardDescription>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {cotizacion.variacion && (
-                    <Badge
-                      variant={Number.parseFloat(cotizacion.variacion) >= 0 ? "default" : "destructive"}
-                      className="gap-1 shadow-md text-[10px] sm:text-xs"
-                    >
-                      {Number.parseFloat(cotizacion.variacion) >= 0 ? (
-                        <ArrowUp className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                      ) : (
-                        <ArrowDown className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                      )}
-                      {Math.abs(Number.parseFloat(cotizacion.variacion)).toFixed(2)}%
-                    </Badge>
-                  )}
-                </CardHeader>
-                <CardContent className="px-3 sm:px-4 py-2">
-                  <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                    <div className="space-y-1 sm:space-y-2">
-                      <p className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">
-                        Compra
-                      </p>
-                      <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 p-2 sm:p-3 rounded-lg">
-                        <p className="text-base sm:text-xl font-bold text-emerald-700 dark:text-emerald-300">
-                          {cotizacion.compra !== "No Cotiza"
-                            ? `$${Number.parseFloat(cotizacion.compra).toFixed(2)}`
-                            : "-"}
+                    {cotizacion.variacion && (
+                      <Badge
+                        variant={Number.parseFloat(cotizacion.variacion) >= 0 ? "default" : "destructive"}
+                        className="gap-1 shadow-md text-[10px] sm:text-xs"
+                      >
+                        {Number.parseFloat(cotizacion.variacion) >= 0 ? (
+                          <ArrowUp className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                        ) : (
+                          <ArrowDown className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                        )}
+                        {Math.abs(Number.parseFloat(cotizacion.variacion)).toFixed(2)}%
+                      </Badge>
+                    )}
+                  </CardHeader>
+                  <CardContent className="px-3 sm:px-4 py-2">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                      <div className="space-y-1 sm:space-y-2">
+                        <p className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">
+                          Compra
                         </p>
+                        <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 p-2 sm:p-3 rounded-lg">
+                          <p className="text-base sm:text-xl font-bold text-emerald-700 dark:text-emerald-300">
+                            {cotizacion.compra !== "No Cotiza"
+                              ? `$${Number.parseFloat(cotizacion.compra).toFixed(2)}`
+                              : "-"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="space-y-1 sm:space-y-2">
-                      <p className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">
-                        Venta
-                      </p>
-                      <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-2 sm:p-3 rounded-lg">
-                        <p className="text-base sm:text-xl font-bold text-blue-700 dark:text-blue-300">
-                          {cotizacion.venta !== "No Cotiza"
-                            ? `$${Number.parseFloat(cotizacion.venta).toFixed(2)}`
-                            : "-"}
+                      <div className="space-y-1 sm:space-y-2">
+                        <p className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wide">
+                          Venta
                         </p>
+                        <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-2 sm:p-3 rounded-lg">
+                          <p className="text-base sm:text-xl font-bold text-blue-700 dark:text-blue-300">
+                            {cotizacion.venta !== "No Cotiza"
+                              ? `$${Number.parseFloat(cotizacion.venta).toFixed(2)}`
+                              : "-"}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 px-3 sm:px-4 py-2">
-                  <p className="text-[10px] sm:text-xs text-muted-foreground">
-                    🕒 Actualizado:{" "}
-                    {new Date().toLocaleDateString("es-AR", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </CardFooter>
-              </Card>
-            ))}
+                  </CardContent>
+                  <CardFooter className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 px-3 sm:px-4 py-2">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">
+                      🕒 Actualizado:{" "}
+                      {new Date().toLocaleDateString("es-AR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </CardFooter>
+                </Card>
+              ))}
           </div>
 
           {/* Calculadora de Conversión */}

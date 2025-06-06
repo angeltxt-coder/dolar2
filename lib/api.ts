@@ -11,17 +11,24 @@ export async function getCotizaciones() {
 
     const data = await response.json()
 
-    // Agregar el dólar cripto (simulado, ya que no está en la API)
-    const dolarCripto = {
-      casa: "cripto",
-      nombre: "Dólar Cripto",
-      compra: "1140",
-      venta: "1160",
-      fechaActualizacion: new Date().toISOString(),
-      variacion: "0.5",
+    // Verificar si ya existe el dólar cripto en los datos
+    const existeCripto = data.some((item) => item.casa === "cripto")
+
+    // Agregar el dólar cripto (simulado) solo si no existe ya
+    if (!existeCripto) {
+      const dolarCripto = {
+        casa: "cripto",
+        nombre: "Dólar Cripto",
+        compra: "1140",
+        venta: "1160",
+        fechaActualizacion: new Date().toISOString(),
+        variacion: "0.5",
+      }
+
+      return [...data, dolarCripto]
     }
 
-    return [...data, dolarCripto]
+    return data
   } catch (error) {
     console.error("Error fetching data:", error)
 
