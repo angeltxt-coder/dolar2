@@ -1,6 +1,8 @@
 import "@/app/globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { GoogleAdSenseScript } from "@/components/google-adsense"
+import { GoogleAnalyticsScript } from "@/components/google-analytics"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -29,6 +31,10 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="DolarOficial" />
         <meta name="mobile-web-app-capable" content="yes" />
+        {/* Script de Google AdSense */}
+        <GoogleAdSenseScript />
+        {/* Script de Google Analytics */}
+        <GoogleAnalyticsScript />
       </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>

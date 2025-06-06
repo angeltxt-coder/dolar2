@@ -1,8 +1,9 @@
 import { Suspense } from "react"
 import { ArrowDown, ArrowUp, TrendingUp, DollarSign, BarChart3, RefreshCcw, Sparkles } from "lucide-react"
+import GoogleAd from "@/components/google-adsense"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
@@ -42,7 +43,7 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Header mejorado con gradiente */}
+      {/* Header simplificado */}
       <header className="sticky top-0 z-10 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-white/20 dark:border-gray-700/20 shadow-lg">
         <div className="flex h-16 sm:h-20 items-center gap-2 sm:gap-4 px-3 sm:px-4 md:px-6">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -56,7 +57,6 @@ export default async function Home() {
               <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
                 DolarOficial
               </h1>
-              <p className="text-[10px] sm:text-xs text-muted-foreground">dolaroficial.com.ar</p>
             </div>
           </div>
           <div className="ml-auto flex items-center gap-2">
@@ -75,25 +75,19 @@ export default async function Home() {
 
       <main className="flex-1 p-4 md:p-6">
         <div className="grid gap-8">
-          {/* Hero Section */}
+          {/* Hero Section simplificado */}
           <div className="text-center space-y-2 sm:space-y-4">
             <div className="inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-emerald-100 to-blue-100 dark:from-emerald-900/20 dark:to-blue-900/20 px-2 sm:px-4 py-1 sm:py-2 rounded-full">
               <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-600 dark:text-emerald-400" />
-              <span className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-300">
-                Actualizado en tiempo real
-              </span>
+              <span className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-300">En vivo</span>
             </div>
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-slate-100 dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent px-2">
               Cotizaciones del Dólar
             </h1>
-            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-              Todas las cotizaciones del dólar en Argentina con análisis inteligente
-            </p>
           </div>
 
-          {/* Dólar Oficial Destacado - NUEVO */}
+          {/* Dólar Oficial Destacado */}
           <div className="relative">
-            {/* Animación RGB de fondo */}
             <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 via-indigo-500 via-purple-500 to-red-500 rounded-2xl blur-sm opacity-75 animate-pulse bg-[length:400%_400%] animate-[gradient_3s_ease_infinite]"></div>
 
             <Card className="relative border-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-2xl overflow-hidden">
@@ -104,7 +98,7 @@ export default async function Home() {
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
                     <div className="relative flex items-center justify-center">
                       <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur animate-pulse"></div>
-                      <div className="relative bg-gradient-to-r from-emerald-500 to-blue-600 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center">
+                      <div className="relative bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center">
                         <span className="text-2xl sm:text-3xl">🏛️</span>
                       </div>
                     </div>
@@ -112,7 +106,6 @@ export default async function Home() {
                       <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
                         Dólar Oficial
                       </h2>
-                      <p className="text-xs sm:text-sm text-muted-foreground">Cotización del Banco Nación</p>
                     </div>
                   </div>
 
@@ -168,34 +161,23 @@ export default async function Home() {
                         ).toFixed(2)}
                         %
                       </Badge>
-                      <span className="text-xs sm:text-sm text-muted-foreground">variación diaria</span>
                     </div>
                   )}
-
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    🕒 Última actualización:{" "}
-                    {new Date().toLocaleDateString("es-AR", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Recomendación mejorada - MOVIDA ARRIBA */}
+          {/* Anuncio después del dólar oficial */}
+          <GoogleAd adSlot="1234567890" className="my-4" />
+
+          {/* Recomendación simplificada */}
           <Card className="border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm shadow-2xl">
             <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 px-3 sm:px-6 py-3 sm:py-4">
               <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-xl">
                 <Sparkles className="h-4 w-4 sm:h-6 sm:w-6 text-indigo-600 dark:text-indigo-400" />
-                ¿Qué dólar conviene comprar?
+                ¿Qué dólar conviene?
               </CardTitle>
-              <CardDescription className="text-xs sm:text-base">
-                Análisis inteligente y recomendación basada en las cotizaciones actuales
-              </CardDescription>
             </CardHeader>
             <CardContent className="p-3 sm:p-6">
               <Suspense fallback={<Skeleton className="h-[200px] w-full rounded-lg" />}>
@@ -204,14 +186,10 @@ export default async function Home() {
             </CardContent>
           </Card>
 
-          {/* Cards de cotizaciones mejoradas */}
+          {/* Cards de cotizaciones simplificadas */}
           <div className="grid gap-3 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cotizaciones
-              .filter(
-                (c, index, self) =>
-                  // Filtrar duplicados basados en la propiedad 'casa'
-                  index === self.findIndex((t) => t.casa === c.casa),
-              )
+              .filter((c, index, self) => index === self.findIndex((t) => t.casa === c.casa) && c.casa !== "oficial")
               .map((cotizacion) => (
                 <Card
                   key={cotizacion.casa}
@@ -226,9 +204,6 @@ export default async function Home() {
                         <span className="text-xl sm:text-2xl">{dolarIcons[cotizacion.casa] || "💰"}</span>
                         <div>
                           <CardTitle className="text-sm sm:text-base font-bold">{cotizacion.nombre}</CardTitle>
-                          <CardDescription className="text-[10px] sm:text-xs uppercase tracking-wide font-medium">
-                            {cotizacion.casa}
-                          </CardDescription>
                         </div>
                       </div>
                     </div>
@@ -274,17 +249,6 @@ export default async function Home() {
                       </div>
                     </div>
                   </CardContent>
-                  <CardFooter className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 px-3 sm:px-4 py-2">
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">
-                      🕒 Actualizado:{" "}
-                      {new Date().toLocaleDateString("es-AR", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                  </CardFooter>
                 </Card>
               ))}
           </div>
@@ -299,7 +263,7 @@ export default async function Home() {
             <WidgetCompartir cotizaciones={cotizaciones} />
           </Suspense>
 
-          {/* Tabs mejoradas */}
+          {/* Tabs simplificadas */}
           <Tabs defaultValue="grafico" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm p-0.5 sm:p-1 rounded-xl shadow-lg">
               <TabsTrigger
@@ -323,11 +287,8 @@ export default async function Home() {
                 <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 px-3 sm:px-6 py-3 sm:py-4">
                   <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
                     <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
-                    Evolución del Dólar
+                    Evolución
                   </CardTitle>
-                  <CardDescription className="text-xs sm:text-sm">
-                    Evolución de las principales cotizaciones en los últimos 30 días
-                  </CardDescription>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
                   <Suspense fallback={<Skeleton className="h-full w-full rounded-lg" />}>
@@ -342,11 +303,8 @@ export default async function Home() {
                 <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 px-3 sm:px-6 py-3 sm:py-4">
                   <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
                     <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400" />
-                    Comparativa de Cotizaciones
+                    Comparativa
                   </CardTitle>
-                  <CardDescription className="text-xs sm:text-sm">
-                    Comparación entre los diferentes tipos de dólar
-                  </CardDescription>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
                   <Suspense fallback={<Skeleton className="h-full w-full rounded-lg" />}>
@@ -364,20 +322,19 @@ export default async function Home() {
         </div>
       </main>
 
-      {/* Footer mejorado */}
+      {/* Anuncio antes del footer */}
+      <GoogleAd adSlot="0987654321" adFormat="horizontal" className="my-8" />
+
+      {/* Footer simplificado */}
       <footer className="border-t border-white/20 dark:border-gray-700/20 bg-gradient-to-r from-slate-900 to-indigo-900 dark:from-gray-900 dark:to-gray-800 text-white">
         <div className="py-4 sm:py-8 px-4 sm:px-6">
-          <div className="flex flex-col items-center justify-between gap-3 sm:gap-4 md:flex-row text-center md:text-left">
+          <div className="flex flex-col items-center justify-center gap-2 text-center">
             <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+              <DollarSign className="h-4 w-4 text-emerald-400" />
               <p className="text-xs sm:text-sm">
-                © {new Date().getFullYear()} <span className="font-semibold">dolaroficial.com.ar</span>. Datos
-                proporcionados por DolarApi.
+                © {new Date().getFullYear()} <span className="font-semibold">dolaroficial.com.ar</span>
               </p>
             </div>
-            <p className="text-[10px] sm:text-xs text-slate-300">
-              Los datos son solo informativos y pueden no reflejar el valor real de mercado.
-            </p>
           </div>
         </div>
       </footer>

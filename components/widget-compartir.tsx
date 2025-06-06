@@ -2,15 +2,14 @@
 
 import { useState } from "react"
 import { Share2, Copy, Facebook, Twitter, MessageCircle, Check } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useAnalyticsEventTracker } from "@/components/google-analytics"
 
 export default function WidgetCompartir({ cotizaciones }) {
   const [copiado, setCopiado] = useState(false)
+  const analytics = useAnalyticsEventTracker()
 
-  // Encontrar el dólar más barato
   const cotizacionesValidas = cotizaciones.filter(
     (c) => c.venta !== "No Cotiza" && c.casa !== "bitcoin" && c.casa !== "contadoliqui",
   )
@@ -18,7 +17,7 @@ export default function WidgetCompartir({ cotizaciones }) {
     Number.parseFloat(current.venta) < Number.parseFloat(prev.venta) ? current : prev,
   )
 
-  const textoCompartir = `💵 ${dolarMasBarato.nombre}: $${Number.parseFloat(dolarMasBarato.venta).toFixed(2)} - La mejor opción para comprar dólares hoy en Argentina 🇦🇷 | dolaroficial.com.ar`
+  const textoCompartir = `💵 ${dolarMasBarato.nombre}: $${Number.parseFloat(dolarMasBarato.venta).toFixed(2)} | dolaroficial.com.ar`
 
   const urlSitio = "https://dolaroficial.com.ar"
 
@@ -27,6 +26,8 @@ export default function WidgetCompartir({ cotizaciones }) {
       await navigator.clipboard.writeText(`${textoCompartir} ${urlSitio}`)
       setCopiado(true)
       setTimeout(() => setCopiado(false), 2000)
+      // Rastrear evento de copia
+      analytics.trackShare("clipboard")
     } catch (err) {
       console.error("Error al copiar:", err)
     }
@@ -52,6 +53,8 @@ export default function WidgetCompartir({ cotizaciones }) {
 
     if (url) {
       window.open(url, "_blank", "width=600,height=400")
+      // Rastrear evento de compartir
+      analytics.trackShare(red)
     }
   }
 
@@ -60,21 +63,14 @@ export default function WidgetCompartir({ cotizaciones }) {
       <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 px-3 sm:px-6 py-3 sm:py-4">
         <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
           <Share2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-          Compartir Cotización
+          Compartir
         </CardTitle>
-        <CardDescription className="text-xs sm:text-sm">
-          Comparte la mejor cotización del día con tus contactos
-        </CardDescription>
       </CardHeader>
       <CardContent className="p-3 sm:p-6 space-y-4">
-        {/* Vista previa del mensaje */}
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-          <Label className="text-sm font-medium text-green-700 dark:text-green-300">Vista previa:</Label>
-          <p className="text-sm mt-2 text-green-800 dark:text-green-200">{textoCompartir}</p>
-          <p className="text-xs text-green-600 dark:text-green-400 mt-1">{urlSitio}</p>
+          <p className="text-sm text-green-800 dark:text-green-200">{textoCompartir}</p>
         </div>
 
-        {/* Botones de redes sociales */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
           <Button
             variant="outline"
@@ -115,19 +111,6 @@ export default function WidgetCompartir({ cotizaciones }) {
             {copiado ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             {copiado ? "¡Copiado!" : "Copiar"}
           </Button>
-        </div>
-
-        {/* Campo de texto editable */}
-        <div className="space-y-2">
-          <Label htmlFor="texto-personalizado" className="text-sm font-medium">
-            Personalizar mensaje:
-          </Label>
-          <Input
-            id="texto-personalizado"
-            value={textoCompartir}
-            readOnly
-            className="text-xs bg-white/50 dark:bg-gray-800/50"
-          />
         </div>
       </CardContent>
     </Card>

@@ -2,27 +2,27 @@
 
 import { useState, useEffect } from "react"
 import { Newspaper, ExternalLink, Clock, TrendingUp } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useAnalyticsEventTracker } from "@/components/google-analytics"
 
-// Noticias simuladas (en una implementación real, estas vendrían de una API)
 const noticiasSimuladas = [
   {
     id: 1,
-    titulo: "El Banco Central intervino en el mercado cambiario",
-    resumen: "La autoridad monetaria vendió US$ 50 millones para contener la presión sobre el tipo de cambio oficial.",
+    titulo: "El Banco Central intervino en el mercado",
+    resumen: "Vendió US$ 50 millones para contener la presión cambiaria.",
     fecha: "2024-06-05T10:30:00Z",
-    categoria: "Política Monetaria",
-    fuente: "Ámbito Financiero",
+    categoria: "Política",
+    fuente: "Ámbito",
     url: "https://www.ambito.com/economia/dolar/",
     impacto: "alto",
   },
   {
     id: 2,
-    titulo: "Nuevas medidas para el acceso al dólar oficial",
-    resumen: "El gobierno anunció modificaciones en los requisitos para la compra de divisas en el mercado oficial.",
+    titulo: "Nuevas medidas para el dólar oficial",
+    resumen: "Modificaciones en los requisitos de compra.",
     fecha: "2024-06-05T08:15:00Z",
     categoria: "Regulaciones",
     fuente: "La Nación",
@@ -31,35 +31,24 @@ const noticiasSimuladas = [
   },
   {
     id: 3,
-    titulo: "El dólar blue se mantiene estable en la semana",
-    resumen: "La cotización paralela mostró poca volatilidad en los últimos días, manteniéndose en torno a los $1200.",
+    titulo: "Dólar blue estable esta semana",
+    resumen: "Se mantiene en torno a los $1200.",
     fecha: "2024-06-04T16:45:00Z",
     categoria: "Mercados",
     fuente: "Cronista",
     url: "https://www.cronista.com/finanzas/divisas/",
     impacto: "bajo",
   },
-  {
-    id: 4,
-    titulo: "Expectativas de inflación impactan en el tipo de cambio",
-    resumen: "Los analistas ajustan sus proyecciones cambiarias ante las nuevas estimaciones inflacionarias del INDEC.",
-    fecha: "2024-06-04T14:20:00Z",
-    categoria: "Análisis",
-    fuente: "iProfesional",
-    url: "https://www.iprofesional.com/economia/",
-    impacto: "medio",
-  },
 ]
 
 export default function NoticiasEconomicas() {
   const [noticias, setNoticias] = useState([])
   const [loading, setLoading] = useState(true)
+  const analytics = useAnalyticsEventTracker()
 
   useEffect(() => {
-    // Simular carga de noticias
     const cargarNoticias = async () => {
       setLoading(true)
-      // Simular delay de API
       await new Promise((resolve) => setTimeout(resolve, 1000))
       setNoticias(noticiasSimuladas)
       setLoading(false)
@@ -90,24 +79,28 @@ export default function NoticiasEconomicas() {
     }
   }
 
+  const handleNoticiaClick = (noticia) => {
+    if (noticia.url && noticia.url !== "#") {
+      // Rastrear clic en noticia
+      analytics.trackNewsClick(noticia.titulo, noticia.fuente)
+      window.open(noticia.url, "_blank", "noopener,noreferrer")
+    }
+  }
+
   if (loading) {
     return (
       <Card className="border-0 bg-white/70 backdrop-blur-sm shadow-xl dark:bg-gray-900/70">
         <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-3 sm:px-6 py-3 sm:py-4">
           <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
             <Newspaper className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-            Noticias Económicas
+            Noticias
           </CardTitle>
-          <CardDescription className="text-xs sm:text-sm">
-            Últimas noticias que pueden impactar el mercado cambiario
-          </CardDescription>
         </CardHeader>
         <CardContent className="p-3 sm:p-6 space-y-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="space-y-2">
               <Skeleton className="h-4 w-3/4" />
               <Skeleton className="h-3 w-full" />
-              <Skeleton className="h-3 w-1/2" />
             </div>
           ))}
         </CardContent>
@@ -120,11 +113,8 @@ export default function NoticiasEconomicas() {
       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-3 sm:px-6 py-3 sm:py-4">
         <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg">
           <Newspaper className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-          Noticias Económicas
+          Noticias
         </CardTitle>
-        <CardDescription className="text-xs sm:text-sm">
-          Últimas noticias que pueden impactar el mercado cambiario
-        </CardDescription>
       </CardHeader>
       <CardContent className="p-3 sm:p-6 space-y-4">
         {noticias.map((noticia) => (
@@ -151,32 +141,19 @@ export default function NoticiasEconomicas() {
                   {formatearFecha(noticia.fecha)}
                 </span>
                 <span>{noticia.fuente}</span>
-                <Badge variant="secondary" className="text-xs">
-                  {noticia.categoria}
-                </Badge>
               </div>
 
               <Button
                 variant="ghost"
                 size="sm"
                 className="h-6 px-2 text-xs hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                onClick={() => {
-                  if (noticia.url && noticia.url !== "#") {
-                    window.open(noticia.url, "_blank", "noopener,noreferrer")
-                  }
-                }}
+                onClick={() => handleNoticiaClick(noticia)}
               >
                 <ExternalLink className="h-3 w-3" />
               </Button>
             </div>
           </div>
         ))}
-
-        <div className="text-center pt-2">
-          <Button variant="outline" size="sm" className="text-xs">
-            Ver más noticias
-          </Button>
-        </div>
       </CardContent>
     </Card>
   )
