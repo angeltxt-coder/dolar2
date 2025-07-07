@@ -69,7 +69,7 @@ export async function generateMetadata() {
 
     // Fallback metadata optimizado para SEO
     return {
-      title: "DolarOficial - Cotizaciones del Dólar en Argentina | Precio Hoy 2024",
+      title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
       description:
         "🔥 Cotizaciones del dólar en Argentina EN VIVO ✓ Dólar oficial, blue, MEP, CCL, cripto ✓ Calculadora de conversión ✓ Gráficos históricos ✓ Noticias BCRA ✓ Mejor precio para comprar dólares hoy ✓ Tipo de cambio actualizado cada 5 minutos ✓ Argentina 2024",
       keywords:
@@ -84,7 +84,7 @@ export async function generateMetadata() {
         title: "DolarOficial",
       },
       openGraph: {
-        title: "DolarOficial - Cotizaciones del Dólar en Argentina | Precio Hoy 2024",
+        title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
         description:
           "🔥 Cotizaciones del dólar en Argentina EN VIVO ✓ Dólar oficial, blue, MEP, CCL, cripto ✓ Calculadora de conversión ✓ Gráficos históricos ✓ Noticias BCRA ✓ Mejor precio para comprar dólares hoy",
         url: "https://dolaroficial.com.ar",
@@ -96,13 +96,13 @@ export async function generateMetadata() {
             url: "/og-image.jpg",
             width: 1200,
             height: 630,
-            alt: "Cotizaciones del Dólar en Argentina - DolarOficial",
+            alt: "🔥 Cotizaciones del Dólar EN VIVO - DolarOficial Argentina",
           },
         ],
       },
       twitter: {
         card: "summary_large_image",
-        title: "DolarOficial - Cotizaciones del Dólar en Argentina | Precio Hoy 2024",
+        title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
         description:
           "🔥 Cotizaciones del dólar EN VIVO ✓ Oficial, blue, MEP, CCL ✓ Calculadora ✓ Gráficos ✓ Argentina 2024",
         images: ["/og-image.jpg"],
