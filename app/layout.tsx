@@ -1,60 +1,57 @@
 import "@/app/globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
-import { GoogleAdSenseScript } from "@/components/google-adsense"
-import { GoogleAnalyticsScript } from "@/components/google-analytics"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export async function generateMetadata() {
-  // Fallback metadata optimizado para SEO - sin dependencias externas
-  return {
+// Solo metadata estático para evitar conflictos
+export const metadata = {
+  title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
+  description:
+    "🔥 Cotizaciones del dólar en Argentina EN VIVO ✓ Dólar oficial, blue, MEP, CCL, cripto ✓ Calculadora de conversión ✓ Gráficos históricos ✓ Noticias BCRA ✓ Mejor precio para comprar dólares hoy ✓ Tipo de cambio actualizado cada 5 minutos ✓ Argentina 2024",
+  keywords:
+    "dólar hoy, precio del dólar, dólar blue, dólar oficial, cotización dólar, dólar MEP, dólar CCL, dólar cripto, calculadora dólar, tipo de cambio, BCRA, argentina, peso argentino, mercado cambiario, brecha cambiaria, reservas, inflación, economía argentina",
+  manifest: "/manifest.json",
+  themeColor: "#10b981",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "DolarOficial",
+  },
+  openGraph: {
     title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
     description:
-      "🔥 Cotizaciones del dólar en Argentina EN VIVO ✓ Dólar oficial, blue, MEP, CCL, cripto ✓ Calculadora de conversión ✓ Gráficos históricos ✓ Noticias BCRA ✓ Mejor precio para comprar dólares hoy ✓ Tipo de cambio actualizado cada 5 minutos ✓ Argentina 2024",
-    keywords:
-      "dólar hoy, precio del dólar, dólar blue, dólar oficial, cotización dólar, dólar MEP, dólar CCL, dólar cripto, calculadora dólar, tipo de cambio, BCRA, argentina, peso argentino, mercado cambiario, brecha cambiaria, reservas, inflación, economía argentina",
-    manifest: "/manifest.json",
-    themeColor: "#10b981",
-    viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-    robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
-    appleWebApp: {
-      capable: true,
-      statusBarStyle: "default",
-      title: "DolarOficial",
-    },
-    openGraph: {
-      title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
-      description:
-        "🔥 Cotizaciones del dólar en Argentina EN VIVO ✓ Dólar oficial, blue, MEP, CCL, cripto ✓ Calculadora de conversión ✓ Gráficos históricos ✓ Noticias BCRA ✓ Mejor precio para comprar dólares hoy",
-      url: "https://dolaroficial.com.ar",
-      siteName: "DolarOficial",
-      type: "website",
-      locale: "es_AR",
-      images: [
-        {
-          url: "/og-image.jpg",
-          width: 1200,
-          height: 630,
-          alt: "🔥 Cotizaciones del Dólar EN VIVO - DolarOficial Argentina",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
-      description:
-        "🔥 Cotizaciones del dólar EN VIVO ✓ Oficial, blue, MEP, CCL ✓ Calculadora ✓ Gráficos ✓ Argentina 2024",
-      images: ["/og-image.jpg"],
-      creator: "@dolaroficial",
-    },
-    alternates: {
-      canonical: "https://dolaroficial.com.ar",
-    },
-    other: {
-      "google-site-verification": "tu-codigo-de-verificacion-aqui",
-    },
-  }
+      "🔥 Cotizaciones del dólar en Argentina EN VIVO ✓ Dólar oficial, blue, MEP, CCL, cripto ✓ Calculadora de conversión ✓ Gráficos históricos ✓ Noticias BCRA ✓ Mejor precio para comprar dólares hoy",
+    url: "https://dolaroficial.com.ar",
+    siteName: "DolarOficial",
+    type: "website",
+    locale: "es_AR",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "🔥 Cotizaciones del Dólar EN VIVO - DolarOficial Argentina",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "🔥 DolarOficial - Cotizaciones del Dólar EN VIVO | Argentina 2024",
+    description:
+      "🔥 Cotizaciones del dólar EN VIVO ✓ Oficial, blue, MEP, CCL ✓ Calculadora ✓ Gráficos ✓ Argentina 2024",
+    images: ["/og-image.jpg"],
+    creator: "@dolaroficial",
+  },
+  alternates: {
+    canonical: "https://dolaroficial.com.ar",
+  },
+  other: {
+    "google-site-verification": "tu-codigo-de-verificacion-aqui",
+  },
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({ children }) {
@@ -171,11 +168,6 @@ export default function RootLayout({ children }) {
             }),
           }}
         />
-
-        {/* Script de Google AdSense */}
-        <GoogleAdSenseScript />
-        {/* Script de Google Analytics */}
-        <GoogleAnalyticsScript />
       </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
@@ -185,7 +177,3 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
-
-export const metadata = {
-      generator: 'v0.dev'
-    };

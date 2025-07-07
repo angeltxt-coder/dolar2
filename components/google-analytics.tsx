@@ -1,8 +1,7 @@
 "use client"
 
 import { usePathname, useSearchParams } from "next/navigation"
-import Script from "next/script"
-import { useEffect, Suspense } from "react"
+import { useEffect } from "react"
 
 // ID de medición de Google Analytics
 const GA_MEASUREMENT_ID = "G-5GJC9KK5H0"
@@ -63,22 +62,7 @@ function AnalyticsTracker() {
 
 // Componente principal que carga el script de Google Analytics
 export function GoogleAnalyticsScript() {
-  return (
-    <>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_MEASUREMENT_ID}');
-        `}
-      </Script>
-      <Suspense fallback={null}>
-        <AnalyticsTracker />
-      </Suspense>
-    </>
-  )
+  return null // Deshabilitado temporalmente para evitar conflictos
 }
 
 // Componente para rastrear eventos de interacción con el usuario

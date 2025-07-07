@@ -1,9 +1,7 @@
 "use client"
 
 import type React from "react"
-
 import { useEffect } from "react"
-import Script from "next/script"
 
 interface GoogleAdProps {
   adSlot: string
@@ -40,14 +38,5 @@ export default function GoogleAd({ adSlot, adFormat = "auto", style, className }
 
 // Componente para cargar el script de AdSense en el layout
 export function GoogleAdSenseScript() {
-  return (
-    <Script
-      id="google-adsense"
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" // Reemplazar con tu ID de cliente
-      strategy="afterInteractive"
-      crossOrigin="anonymous"
-      onError={(e) => console.error("Error al cargar el script de AdSense:", e)}
-    />
-  )
+  return null // Deshabilitado temporalmente para evitar conflictos
 }
