@@ -162,6 +162,60 @@ export default async function Home() {
         </div>
       </header>
 
+      {/* Ticker de precios EN VIVO - Arriba de todo */}
+      <div className="bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 text-white py-2 px-4 overflow-hidden">
+        <div className="flex items-center justify-center gap-8 animate-pulse">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium">🏛️ OFICIAL:</span>
+            <span className="text-lg font-bold">
+              ${dolarOficial?.venta ? Number.parseFloat(dolarOficial.venta).toFixed(2) : "N/A"}
+            </span>
+            {dolarOficial?.variacion && (
+              <span
+                className={`text-xs ${Number.parseFloat(dolarOficial.variacion) >= 0 ? "text-green-200" : "text-red-200"}`}
+              >
+                {Number.parseFloat(dolarOficial.variacion) >= 0 ? "↗" : "↘"}{" "}
+                {Math.abs(Number.parseFloat(dolarOficial.variacion)).toFixed(2)}%
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium">💙 BLUE:</span>
+            <span className="text-lg font-bold">
+              ${dolarBlue?.venta ? Number.parseFloat(dolarBlue.venta).toFixed(2) : "N/A"}
+            </span>
+            {dolarBlue?.variacion && (
+              <span
+                className={`text-xs ${Number.parseFloat(dolarBlue.variacion) >= 0 ? "text-green-200" : "text-red-200"}`}
+              >
+                {Number.parseFloat(dolarBlue.variacion) >= 0 ? "↗" : "↘"}{" "}
+                {Math.abs(Number.parseFloat(dolarBlue.variacion)).toFixed(2)}%
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium">📈 MEP:</span>
+            <span className="text-lg font-bold">
+              ${dolarMEP?.venta ? Number.parseFloat(dolarMEP.venta).toFixed(2) : "N/A"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium">💱 CCL:</span>
+            <span className="text-lg font-bold">
+              ${dolarCCL?.venta ? Number.parseFloat(dolarCCL.venta).toFixed(2) : "N/A"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium">🔥 BRECHA:</span>
+            <span className="text-lg font-bold text-yellow-200">{brechaBlue}%</span>
+          </div>
+        </div>
+      </div>
+
       <main className="flex-1 p-4 md:p-6">
         <div className="grid gap-4 sm:gap-6">
           {/* Hero Section VIRAL con SEO MASIVO */}

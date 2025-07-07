@@ -62,7 +62,20 @@ function AnalyticsTracker() {
 
 // Componente principal que carga el script de Google Analytics
 export function GoogleAnalyticsScript() {
-  return null // Deshabilitado temporalmente para evitar conflictos
+  return (
+    <>
+      <script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
+      <script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}');
+        `}
+      </script>
+      <AnalyticsTracker />
+    </>
+  )
 }
 
 // Componente para rastrear eventos de interacción con el usuario
