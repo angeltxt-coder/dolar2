@@ -186,7 +186,7 @@ export default function RootLayout({ children }) {
                 {
                   "@type": "Thing",
                   name: "Dólar Estadounidense",
-                  sameAs: "https://es.wikipedia.org/wiki/D%C3%B3lar_estadounidense",
+                  sameAs: "https://es.wikipedia.org/wiki/%C3%93lar_estadounidense",
                 },
                 {
                   "@type": "Thing",
