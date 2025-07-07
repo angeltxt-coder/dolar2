@@ -12,7 +12,6 @@ import {
   Trophy,
   Bell,
 } from "lucide-react"
-import GoogleAd from "@/components/google-adsense"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -26,15 +25,12 @@ import RecomendacionDolar from "@/components/recomendacion-dolar"
 import CalculadoraConversion from "@/components/calculadora-conversion"
 import WidgetCompartir from "@/components/widget-compartir"
 import NoticiasEconomicas from "@/components/noticias-economicas"
-import DynamicSEOContent from "@/components/dynamic-seo-content"
-import SEOFooterContent from "@/components/seo-footer-content"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { getCotizaciones } from "@/lib/api"
-import { getContextualSEOPhrase } from "@/lib/seo-trends"
 import NoticiasRelevantes from "@/components/noticias-relevantes"
 
 // Colores específicos para cada tipo de dólar
-const dolarColors = {
+const dolarColors: Record<string, string> = {
   oficial: "from-emerald-500 to-teal-600",
   blue: "from-blue-500 to-indigo-600",
   bolsa: "from-amber-500 to-orange-600", // MEP
@@ -44,7 +40,7 @@ const dolarColors = {
   cripto: "from-cyan-500 to-blue-500",
 }
 
-const dolarIcons = {
+const dolarIcons: Record<string, string> = {
   oficial: "🏛️",
   blue: "💙",
   bolsa: "📈", // MEP
@@ -54,7 +50,7 @@ const dolarIcons = {
   cripto: "₿",
 }
 
-const dolarNames = {
+const dolarNames: Record<string, string> = {
   oficial: "Dólar Oficial",
   blue: "Dólar Blue",
   bolsa: "Dólar MEP",
@@ -69,32 +65,42 @@ export default async function Home() {
 
   // Filtrar cotizaciones válidas y eliminar mayorista si existe
   const cotizacionesFiltradas = cotizaciones.filter(
-    (c, index, self) => index === self.findIndex((t) => t.casa === c.casa) && c.casa !== "mayorista", // Eliminar dólar mayorista
+    (c: any, index: number, self: any[]) =>
+      index === self.findIndex((t: any) => t.casa === c.casa) && c.casa !== "mayorista",
   )
 
   // Calcular estadísticas para engagement
-  const dolarOficial = cotizacionesFiltradas.find((c) => c.casa === "oficial")
-  const dolarBlue = cotizacionesFiltradas.find((c) => c.casa === "blue")
-  const brechaBlue =
-    dolarOficial && dolarBlue
-      ? (
-          ((Number.parseFloat(dolarBlue.venta) - Number.parseFloat(dolarOficial.venta)) /
-            Number.parseFloat(dolarOficial.venta)) *
-          100
-        ).toFixed(1)
-      : "0"
+  const dolarOficial = cotizacionesFiltradas.find((c: any) => c.casa === "oficial")
+  const dolarBlue = cotizacionesFiltradas.find((c: any) => c.casa === "blue")
 
-  const dolarMasCaro = cotizacionesFiltradas
-    .filter((c) => c.venta !== "No Cotiza")
-    .reduce((prev, current) => (Number.parseFloat(current.venta) > Number.parseFloat(prev.venta) ? current : prev))
+  let brechaBlue = "0"
+  if (dolarOficial && dolarBlue && dolarOficial.venta && dolarBlue.venta) {
+    const oficialVenta = Number.parseFloat(dolarOficial.venta)
+    const blueVenta = Number.parseFloat(dolarBlue.venta)
+    if (!isNaN(oficialVenta) && !isNaN(blueVenta) && oficialVenta > 0) {
+      brechaBlue = (((blueVenta - oficialVenta) / oficialVenta) * 100).toFixed(1)
+    }
+  }
 
-  const dolarMasBarato = cotizacionesFiltradas
-    .filter((c) => c.venta !== "No Cotiza")
-    .reduce((prev, current) => (Number.parseFloat(current.venta) < Number.parseFloat(prev.venta) ? current : prev))
+  const cotizacionesConPrecio = cotizacionesFiltradas.filter((c: any) => c.venta !== "No Cotiza")
+
+  const dolarMasCaro =
+    cotizacionesConPrecio.length > 0
+      ? cotizacionesConPrecio.reduce((prev: any, current: any) =>
+          Number.parseFloat(current.venta) > Number.parseFloat(prev.venta) ? current : prev,
+        )
+      : null
+
+  const dolarMasBarato =
+    cotizacionesConPrecio.length > 0
+      ? cotizacionesConPrecio.reduce((prev: any, current: any) =>
+          Number.parseFloat(current.venta) < Number.parseFloat(prev.venta) ? current : prev,
+        )
+      : null
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Header viral con CTAs */}
+      {/* Header */}
       <header className="sticky top-0 z-10 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-white/20 dark:border-gray-700/20 shadow-lg">
         <div className="flex h-16 sm:h-20 items-center gap-2 sm:gap-4 px-3 sm:px-4 md:px-6">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -112,7 +118,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Alertas en vivo */}
           <div className="hidden md:flex items-center gap-2 ml-4">
             <Badge variant="destructive" className="animate-pulse">
               <Bell className="h-3 w-3 mr-1" />
@@ -144,7 +149,7 @@ export default async function Home() {
 
       <main className="flex-1 p-4 md:p-6">
         <div className="grid gap-4 sm:gap-6">
-          {/* Hero Section VIRAL con estadísticas impactantes */}
+          {/* Hero Section */}
           <div className="text-center space-y-4">
             <div className="flex flex-wrap justify-center gap-2">
               <Badge variant="destructive" className="animate-bounce">
@@ -161,127 +166,108 @@ export default async function Home() {
               </Badge>
             </div>
 
-            {/* Contenido SEO dinámico */}
-            <Suspense
-              fallback={
-                <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-slate-100 dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent">
-                  🔥 DÓLAR HOY: Cotizaciones EN VIVO
-                </h1>
-              }
-            >
-              <DynamicSEOContent cotizaciones={cotizacionesFiltradas} />
-            </Suspense>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 dark:from-slate-100 dark:via-blue-100 dark:to-indigo-100 bg-clip-text text-transparent">
+              🔥 DÓLAR HOY: Cotizaciones EN VIVO
+            </h1>
 
-            {/* Estadísticas impactantes */}
+            {/* Estadísticas */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               <div className="bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
                 <p className="text-xs font-medium text-red-700 dark:text-red-300">BRECHA BLUE</p>
                 <p className="text-xl font-bold text-red-800 dark:text-red-200">{brechaBlue}%</p>
               </div>
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
-                <p className="text-xs font-medium text-green-700 dark:text-green-300">MÁS BARATO</p>
-                <p className="text-xl font-bold text-green-800 dark:text-green-200">
-                  ${Number.parseFloat(dolarMasBarato.venta).toFixed(0)}
-                </p>
-              </div>
-              <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 p-3 rounded-lg border border-orange-200 dark:border-orange-800">
-                <p className="text-xs font-medium text-orange-700 dark:text-orange-300">MÁS CARO</p>
-                <p className="text-xl font-bold text-orange-800 dark:text-orange-200">
-                  ${Number.parseFloat(dolarMasCaro.venta).toFixed(0)}
-                </p>
-              </div>
-              <div className="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
-                <p className="text-xs font-medium text-purple-700 dark:text-purple-300">DIFERENCIA</p>
-                <p className="text-xl font-bold text-purple-800 dark:text-purple-200">
-                  ${(Number.parseFloat(dolarMasCaro.venta) - Number.parseFloat(dolarMasBarato.venta)).toFixed(0)}
-                </p>
-              </div>
+              {dolarMasBarato && (
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                  <p className="text-xs font-medium text-green-700 dark:text-green-300">MÁS BARATO</p>
+                  <p className="text-xl font-bold text-green-800 dark:text-green-200">
+                    ${Number.parseFloat(dolarMasBarato.venta).toFixed(0)}
+                  </p>
+                </div>
+              )}
+              {dolarMasCaro && (
+                <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 p-3 rounded-lg border border-orange-200 dark:border-orange-800">
+                  <p className="text-xs font-medium text-orange-700 dark:text-orange-300">MÁS CARO</p>
+                  <p className="text-xl font-bold text-orange-800 dark:text-orange-200">
+                    ${Number.parseFloat(dolarMasCaro.venta).toFixed(0)}
+                  </p>
+                </div>
+              )}
+              {dolarMasCaro && dolarMasBarato && (
+                <div className="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
+                  <p className="text-xs font-medium text-purple-700 dark:text-purple-300">DIFERENCIA</p>
+                  <p className="text-xl font-bold text-purple-800 dark:text-purple-200">
+                    ${(Number.parseFloat(dolarMasCaro.venta) - Number.parseFloat(dolarMasBarato.venta)).toFixed(0)}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Dólar Oficial Destacado con animación RGB */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 via-indigo-500 via-purple-500 to-red-500 rounded-2xl blur-sm opacity-75 animate-pulse bg-[length:400%_400%] animate-[gradient_3s_ease_infinite]"></div>
+          {/* Dólar Oficial Destacado */}
+          <Card className="border-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-2xl overflow-hidden">
+            <CardContent className="p-3 sm:p-6">
+              <div className="text-center space-y-2 sm:space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center">
+                    <span className="text-xl sm:text-2xl">🏛️</span>
+                  </div>
+                  <h2 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    🔥 DÓLAR OFICIAL BCRA
+                  </h2>
+                  <Badge variant="destructive" className="animate-pulse">
+                    EN VIVO
+                  </Badge>
+                </div>
 
-            <Card className="relative border-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 animate-[shimmer_2s_ease-in-out_infinite]"></div>
+                <div className="grid grid-cols-2 gap-4 sm:gap-8 max-w-md mx-auto">
+                  <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 p-3 sm:p-4 rounded-xl border border-emerald-200 dark:border-emerald-700">
+                    <p className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-1">
+                      💰 COMPRA
+                    </p>
+                    <p className="text-2xl sm:text-4xl font-bold text-emerald-800 dark:text-emerald-200">
+                      $
+                      {dolarOficial?.compra !== "No Cotiza" && dolarOficial?.compra
+                        ? Number.parseFloat(dolarOficial.compra).toFixed(2)
+                        : "-"}
+                    </p>
+                  </div>
 
-              <CardContent className="relative p-3 sm:p-6">
-                <div className="text-center space-y-2 sm:space-y-3">
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-3 sm:p-4 rounded-xl border border-blue-200 dark:border-blue-700">
+                    <p className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">💸 VENTA</p>
+                    <p className="text-2xl sm:text-4xl font-bold text-blue-800 dark:text-blue-200">
+                      $
+                      {dolarOficial?.venta !== "No Cotiza" && dolarOficial?.venta
+                        ? Number.parseFloat(dolarOficial.venta).toFixed(2)
+                        : "-"}
+                    </p>
+                  </div>
+                </div>
+
+                {dolarOficial?.variacion && (
                   <div className="flex items-center justify-center gap-2">
-                    <div className="relative flex items-center justify-center">
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur animate-pulse"></div>
-                      <div className="relative bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center">
-                        <span className="text-xl sm:text-2xl">🏛️</span>
-                      </div>
-                    </div>
-                    <h2 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      🔥 DÓLAR OFICIAL BCRA
-                    </h2>
-                    <Badge variant="destructive" className="animate-pulse">
-                      EN VIVO
+                    <Badge
+                      variant={Number.parseFloat(dolarOficial.variacion) >= 0 ? "default" : "destructive"}
+                      className="gap-1 shadow-lg text-sm px-3 py-1 animate-bounce"
+                    >
+                      {Number.parseFloat(dolarOficial.variacion) >= 0 ? (
+                        <ArrowUp className="h-4 w-4" />
+                      ) : (
+                        <ArrowDown className="h-4 w-4" />
+                      )}
+                      {Math.abs(Number.parseFloat(dolarOficial.variacion)).toFixed(2)}%
                     </Badge>
                   </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
 
-                  <div className="grid grid-cols-2 gap-4 sm:gap-8 max-w-md mx-auto">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 rounded-xl blur"></div>
-                      <div className="relative bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/30 p-3 sm:p-4 rounded-xl border border-emerald-200 dark:border-emerald-700">
-                        <p className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-1">
-                          💰 COMPRA
-                        </p>
-                        <p className="text-2xl sm:text-4xl font-bold text-emerald-800 dark:text-emerald-200">
-                          $
-                          {dolarOficial?.compra !== "No Cotiza"
-                            ? Number.parseFloat(dolarOficial?.compra || "0").toFixed(2)
-                            : "-"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-blue-600/20 rounded-xl blur"></div>
-                      <div className="relative bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-3 sm:p-4 rounded-xl border border-blue-200 dark:border-blue-700">
-                        <p className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">💸 VENTA</p>
-                        <p className="text-2xl sm:text-4xl font-bold text-blue-800 dark:text-blue-200">
-                          $
-                          {dolarOficial?.venta !== "No Cotiza"
-                            ? Number.parseFloat(dolarOficial?.venta || "0").toFixed(2)
-                            : "-"}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {dolarOficial?.variacion && (
-                    <div className="flex items-center justify-center gap-2">
-                      <Badge
-                        variant={Number.parseFloat(dolarOficial?.variacion || "0") >= 0 ? "default" : "destructive"}
-                        className="gap-1 shadow-lg text-sm px-3 py-1 animate-bounce"
-                      >
-                        {Number.parseFloat(dolarOficial?.variacion || "0") >= 0 ? (
-                          <ArrowUp className="h-4 w-4" />
-                        ) : (
-                          <ArrowDown className="h-4 w-4" />
-                        )}
-                        {Math.abs(Number.parseFloat(dolarOficial?.variacion || "0")).toFixed(2)}%
-                      </Badge>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Anuncio después del dólar oficial */}
-          <GoogleAd adSlot="1234567890" className="my-4" />
-
-          {/* Recomendación VIRAL */}
+          {/* Recomendación */}
           <Card className="border-0 bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 shadow-2xl">
             <CardHeader className="bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 px-3 sm:px-6 py-2 sm:py-3">
               <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
                 <Fire className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600 dark:text-orange-400 animate-pulse" />🎯 ¿QUÉ
-                DÓLAR COMPRAR HOY? (RECOMENDACIÓN VIRAL)
+                DÓLAR COMPRAR HOY?
                 <Badge variant="destructive" className="animate-bounce">
                   HOT
                 </Badge>
@@ -294,16 +280,15 @@ export default async function Home() {
             </CardContent>
           </Card>
 
-          {/* Cards de cotizaciones mejoradas */}
+          {/* Cards de cotizaciones */}
           <div className="grid gap-3 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cotizacionesFiltradas
-              .filter((c) => c.casa !== "oficial")
-              .map((cotizacion) => (
+              .filter((c: any) => c.casa !== "oficial")
+              .map((cotizacion: any) => (
                 <Card
                   key={cotizacion.casa}
                   className="group hover:shadow-2xl hover:scale-105 transition-all duration-300 border-0 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm overflow-hidden relative"
                 >
-                  {/* Indicador de tendencia */}
                   {cotizacion.variacion && Number.parseFloat(cotizacion.variacion) > 1 && (
                     <div className="absolute top-2 right-2 z-10">
                       <Badge variant="destructive" className="text-xs animate-pulse">
@@ -370,30 +355,30 @@ export default async function Home() {
               ))}
           </div>
 
-          {/* Calculadora de Conversión */}
+          {/* Calculadora */}
           <Suspense fallback={<Skeleton className="h-[400px] w-full rounded-lg" />}>
             <CalculadoraConversion cotizaciones={cotizacionesFiltradas} />
           </Suspense>
 
-          {/* Widget para Compartir VIRAL */}
+          {/* Widget Compartir */}
           <Suspense fallback={<Skeleton className="h-[300px] w-full rounded-lg" />}>
             <WidgetCompartir cotizaciones={cotizacionesFiltradas} />
           </Suspense>
 
-          {/* Tabs mejoradas con más contenido */}
+          {/* Tabs */}
           <Tabs defaultValue="grafico" className="space-y-4">
             <TabsList className="grid w-full grid-cols-2 bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm p-0.5 rounded-xl shadow-lg">
               <TabsTrigger
                 value="grafico"
                 className="gap-1 sm:gap-2 text-xs sm:text-sm py-1.5 sm:py-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-blue-500 data-[state=active]:text-white transition-all duration-300"
               >
-                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />📈 Evolución Histórica
+                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />📈 Evolución
               </TabsTrigger>
               <TabsTrigger
                 value="comparativa"
                 className="gap-1 sm:gap-2 text-xs sm:text-sm py-1.5 sm:py-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-500 data-[state=active]:text-white transition-all duration-300"
               >
-                <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4" />📊 Comparativa VIRAL
+                <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4" />📊 Comparativa
               </TabsTrigger>
             </TabsList>
 
@@ -402,12 +387,8 @@ export default async function Home() {
                 <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-emerald-900/20 px-3 sm:px-6 py-2 sm:py-3">
                   <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
                     <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />📈 Evolución
-                    del Dólar (TENDENCIA VIRAL)
-                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
-                      LIVE
-                    </Badge>
+                    del Dólar
                   </CardTitle>
-                  <p className="text-xs text-emerald-600/80">{getContextualSEOPhrase("graficos")}</p>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
                   <Suspense fallback={<Skeleton className="h-full w-full rounded-lg" />}>
@@ -422,12 +403,7 @@ export default async function Home() {
                 <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 px-3 sm:px-6 py-2 sm:py-3">
                   <CardTitle className="flex items-center gap-1.5 text-base sm:text-lg">
                     <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400" />📊 Comparativa
-                    VIRAL de Cotizaciones
-                    <Badge variant="destructive" className="animate-pulse">
-                      TRENDING
-                    </Badge>
                   </CardTitle>
-                  <p className="text-xs text-amber-600/80">🔥 Comparación visual que está rompiendo las redes</p>
                 </CardHeader>
                 <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
                   <Suspense fallback={<Skeleton className="h-full w-full rounded-lg" />}>
@@ -438,27 +414,18 @@ export default async function Home() {
             </TabsContent>
           </Tabs>
 
-          {/* Noticias Relevantes */}
+          {/* Noticias */}
           <Suspense fallback={<Skeleton className="h-[400px] w-full rounded-lg" />}>
             <NoticiasRelevantes />
           </Suspense>
 
-          {/* Noticias Económicas */}
           <Suspense fallback={<Skeleton className="h-[400px] w-full rounded-lg" />}>
             <NoticiasEconomicas />
           </Suspense>
         </div>
       </main>
 
-      {/* Anuncio antes del footer */}
-      <GoogleAd adSlot="0987654321" adFormat="horizontal" className="my-8" />
-
-      {/* Contenido SEO en el footer */}
-      <Suspense fallback={null}>
-        <SEOFooterContent />
-      </Suspense>
-
-      {/* Footer VIRAL */}
+      {/* Footer */}
       <footer className="border-t border-white/20 dark:border-gray-700/20 bg-gradient-to-r from-slate-900 to-indigo-900 dark:from-gray-900 dark:to-gray-800 text-white">
         <div className="py-4 sm:py-8 px-4 sm:px-6">
           <div className="flex flex-col items-center justify-center gap-4 text-center">
@@ -481,11 +448,6 @@ export default async function Home() {
                 🎯 Datos 100% reales
               </Badge>
             </div>
-
-            <p className="text-xs text-gray-400 max-w-2xl">
-              🚀 La plataforma de cotizaciones del dólar más visitada de Argentina. Información en tiempo real, alertas
-              personalizadas y herramientas avanzadas para tomar las mejores decisiones financieras.
-            </p>
           </div>
         </div>
       </footer>
