@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/badge"
 import DolarChart from "@/components/dolar-chart"
 import ComparativaDolar from "@/components/comparativa-dolar"
 import RecomendacionDolar from "@/components/recomendacion-dolar"
+import CalculadoraConversion from "@/components/calculadora-conversion"
 import WidgetCompartir from "@/components/widget-compartir"
 import NoticiasEconomicas from "@/components/noticias-economicas"
 import DynamicSEOContent from "@/components/dynamic-seo-content"
@@ -31,11 +32,6 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { getCotizaciones } from "@/lib/api"
 import { getContextualSEOPhrase } from "@/lib/seo-trends"
 import NoticiasRelevantes from "@/components/noticias-relevantes"
-import AlertasDolar from "@/components/alertas-dolar"
-import RankingDolares from "@/components/ranking-dolares"
-import CalculadoraAvanzada from "@/components/calculadora-avanzada"
-import GuiaInversion from "@/components/guia-inversion"
-import WidgetSuscripcion from "@/components/widget-suscripcion"
 
 // Colores específicos para cada tipo de dólar
 const dolarColors = {
@@ -76,10 +72,6 @@ export default async function Home() {
     (c, index, self) => index === self.findIndex((t) => t.casa === c.casa) && c.casa !== "mayorista", // Eliminar dólar mayorista
   )
 
-  // Verificar que MEP esté presente (bolsa = MEP)
-  const tieneMEP = cotizacionesFiltradas.some((c) => c.casa === "bolsa")
-  console.log("¿Tiene dólar MEP?", tieneMEP)
-
   // Calcular estadísticas para engagement
   const dolarOficial = cotizacionesFiltradas.find((c) => c.casa === "oficial")
   const dolarBlue = cotizacionesFiltradas.find((c) => c.casa === "blue")
@@ -90,7 +82,7 @@ export default async function Home() {
             Number.parseFloat(dolarOficial.venta)) *
           100
         ).toFixed(1)
-      : 0
+      : "0"
 
   const dolarMasCaro = cotizacionesFiltradas
     .filter((c) => c.venta !== "No Cotiza")
@@ -207,16 +199,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Alertas y notificaciones VIRALES */}
-          <Suspense fallback={<Skeleton className="h-[200px] w-full rounded-lg" />}>
-            <AlertasDolar cotizaciones={cotizacionesFiltradas} />
-          </Suspense>
-
-          {/* Widget de suscripción para engagement */}
-          <Suspense fallback={<Skeleton className="h-[150px] w-full rounded-lg" />}>
-            <WidgetSuscripcion />
-          </Suspense>
-
           {/* Dólar Oficial Destacado con animación RGB */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 via-indigo-500 via-purple-500 to-red-500 rounded-2xl blur-sm opacity-75 animate-pulse bg-[length:400%_400%] animate-[gradient_3s_ease_infinite]"></div>
@@ -293,11 +275,6 @@ export default async function Home() {
 
           {/* Anuncio después del dólar oficial */}
           <GoogleAd adSlot="1234567890" className="my-4" />
-
-          {/* Ranking de dólares para engagement */}
-          <Suspense fallback={<Skeleton className="h-[300px] w-full rounded-lg" />}>
-            <RankingDolares cotizaciones={cotizacionesFiltradas} />
-          </Suspense>
 
           {/* Recomendación VIRAL */}
           <Card className="border-0 bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-900/20 dark:via-orange-900/20 dark:to-red-900/20 shadow-2xl">
@@ -393,19 +370,14 @@ export default async function Home() {
               ))}
           </div>
 
-          {/* Calculadora AVANZADA para engagement */}
+          {/* Calculadora de Conversión */}
           <Suspense fallback={<Skeleton className="h-[400px] w-full rounded-lg" />}>
-            <CalculadoraAvanzada cotizaciones={cotizacionesFiltradas} />
+            <CalculadoraConversion cotizaciones={cotizacionesFiltradas} />
           </Suspense>
 
           {/* Widget para Compartir VIRAL */}
           <Suspense fallback={<Skeleton className="h-[300px] w-full rounded-lg" />}>
             <WidgetCompartir cotizaciones={cotizacionesFiltradas} />
-          </Suspense>
-
-          {/* Guía de inversión para retención */}
-          <Suspense fallback={<Skeleton className="h-[400px] w-full rounded-lg" />}>
-            <GuiaInversion />
           </Suspense>
 
           {/* Tabs mejoradas con más contenido */}
